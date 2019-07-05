@@ -12,6 +12,13 @@ This is a template used for your app to bootstrap a docker container locally for
 ```
 bash docker/start.sh
 ```
+
+5. To start a debug interative ssh session:
+
+```
+bash docker/debug.sh
+```
+
 ## Clean up after done
 
 ```
