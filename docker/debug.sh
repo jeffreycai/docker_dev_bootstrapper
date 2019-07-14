@@ -28,6 +28,9 @@ elif [ -z "${container_started}" ]; then
   if [ -z "${container_started}" ]; then
     docker run ${DOCKER_RUN_OPT} ${DOCKER_RM_OPT} --name ${APP_NAME} ${VOLUME_MOUNT} ${PORT_MAPPING} ${APP_NAME} ${CMD}
   fi
+else
+  log "Container ${APP_NAME} running, Attach"
+  docker exec -it ${APP_NAME} /bin/bash
 fi
 
 
