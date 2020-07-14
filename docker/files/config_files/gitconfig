@@ -1,0 +1,8 @@
+[user]
+        name = bluestream186
+        email = bluestream186@gmail.com
+[core]
+        excludesfile = /root/.gitignore_global
+[credential]
+        helper = !aws codecommit credential-helper $@
+        UseHttpPath = true

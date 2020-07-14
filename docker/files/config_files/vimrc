@@ -1,0 +1,14 @@
+colorscheme desert
+set hlsearch
+set incsearch
+set ignorecase
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set textwidth=0
+set nowrap
+set number
+set scrolloff=3
+set nobackup
+syntax on
+set cursorline
