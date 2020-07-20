@@ -9,12 +9,15 @@ BASEDIR=${BASEDIR}/..
 # build container if not yet
 . $BASEDIR/docker/docker-image-build.sh
 
+# start dind
+. $BASEDIR/docker/docker-container-dind-start.sh
+
 # start interactive seesion
 CMD="/bin/bash"
 DOCKER_RUN_OPT="$DOCKER_RUN_OPT -it"
 
-container_all=$(docker ps -a | grep ${APP_NAME})
-container_started=$(docker ps | grep ${APP_NAME})
+container_all=$(docker ps -aq --filter "name=${APP_NAME}")
+container_started=$(docker ps -q --filter "name=${APP_NAME}")
 if [ -z "${container_all}" ]; then
   log "Container ${APP_NAME} not yet run. Build now.."
   cd $BASEDIR

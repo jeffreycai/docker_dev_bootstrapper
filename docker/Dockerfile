@@ -10,7 +10,7 @@ ARG ANSIBLE_VERSION="2.9.10"
 ## general system packages
 RUN apk update
 RUN apk add vim git bash bash-doc bash-completion curl zip busybox-extras curl gcc \
-    findutils grep musl-dev libffi-dev openssl-dev openssh
+    findutils grep musl-dev libffi-dev openssl-dev openssh docker
 
 ## misellaneous config files
 RUN ln -sf ${ROOT}/docker/files/config_files/gitconfig /root/.gitconfig
@@ -21,6 +21,7 @@ RUN ln -sf ${ROOT}/docker/files/config_files/bashrc /root/.bashrc
 ## python3
 RUN apk add python3 py-pip python3-dev
 RUN pip3 install ansible==${ANSIBLE_VERSION}
+ENV ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3
 
 ## python2
 RUN apk add python2 python2-dev
@@ -31,7 +32,8 @@ RUN python /tmp/get-pip.py
 RUN mkdir -p /root/.ssh
 COPY docker/files/config_files/id_rsa /root/.ssh
 COPY docker/files/config_files/id_rsa.pub /root/.ssh
-RUN ansible-vault decrypt /root/.ssh/id_rsa --vault-password-file ${ROOT}/docker/files/password.txt
+COPY docker/files/password.txt /tmp
+RUN ansible-vault decrypt /root/.ssh/id_rsa --vault-password-file /tmp/password.txt
 RUN chmod 0400 /root/.ssh/id_rsa
 RUN ln -sf ${ROOT}/docker/files/config_files/authorized_keys /root/.ssh
 
@@ -40,6 +42,8 @@ COPY docker/files/awscli-exe-linux-x86_64.zip /tmp/awscli-exe-linux-x86_64.zip
 WORKDIR /tmp
 RUN unzip awscli-exe-linux-x86_64.zip
 RUN ./aws/install
+RUN mkdir -p /root/.aws
+RUN ln -sf ${ROOT}/docker/files/config_files/aws.config /root/.aws/config
 
 ## terraform
 COPY docker/files/terraform-swither-install.sh /tmp
